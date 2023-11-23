@@ -12,5 +12,14 @@ func main() {
 	index := templ.Index()
 	app.Get("/", web.TemplHandler(index))
 
+	one := templ.One()
+	app.Get("/one", web.TemplHandler(one))
+
+	here := templ.Here()
+	app.Get("/here", web.TemplHandler(here))
+
+	notFound := templ.NotFound()
+	app.Get("/*", web.TemplHandler(notFound))
+
 	app.Listen(":3000")
 }
