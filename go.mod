@@ -1,4 +1,4 @@
-module noestabien
+module github.com/bieniucieniu/noestabien
 
 go 1.21.3
 
