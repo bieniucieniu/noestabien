@@ -1,7 +1,18 @@
 package pages
 
+css main() {
+}
+
 templ Index() {
+	<style>
+  main{
+    height: 100svh;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+  }
+  </style>
 	@layout() {
-		<main></main>
+		<main class={ main() }><h1>hello</h1></main>
 	}
 }
