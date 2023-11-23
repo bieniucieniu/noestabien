@@ -1,12 +1,16 @@
-###run:
+### run:
 
 ```bash
-templ generate && go run \*.go
+go mod tidy
+```
+
+```bash
+templ generate && go run *.go
 ```
 
 Start at [http://localhost:3000](http://localhost:3000).
 
-###requirements
+### requirements
 
 ensure installed templ cli
 
@@ -23,3 +27,9 @@ export PATH="$PATH:$HOME/go/bin"
 in `.zshrc`, `.bashrc` or similar.
 
 [go templ](https://templ.guide/)
+
+# to generate .go file from .templ, run
+
+```bash
+templ generate
+```

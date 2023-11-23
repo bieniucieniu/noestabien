@@ -5,6 +5,7 @@ go 1.21.3
 require github.com/gofiber/fiber/v2 v2.51.0
 
 require (
+	github.com/a-h/templ v0.2.476 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/klauspost/compress v1.16.7 // indirect
