@@ -2,9 +2,7 @@ module github.com/bieniucieniu/noestabien
 
 go 1.21.3
 
-require (
-	github.com/gofiber/fiber/v2 v2.51.0
-)
+require github.com/gofiber/fiber/v2 v2.51.0
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect

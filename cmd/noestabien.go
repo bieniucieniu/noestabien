@@ -11,7 +11,7 @@ func main() {
 	app := fiber.New(fiber.Config{UnescapePath: true})
 
 	app.Use("/", filesystem.New(filesystem.Config{
-		Root:         http.Dir("./web/astro/dist"),
+		Root:         http.Dir("./web/static"),
 		Browse:       true,
 		Index:        "index.html",
 		NotFoundFile: "404.html",
