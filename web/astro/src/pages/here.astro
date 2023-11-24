@@ -1,8 +1,8 @@
-package templ
+---
+import BasicLayout from "../layouts/basicLayout.astro"
+---
 
-templ Here() {
-	@layout() {
-		<script>
+<script>
     const _ = window; const __ = _[atob("ZGV2aWNlUGl4ZWxSYXRpbw==")]; function ___() {
         const ____ = _[atob("ZGV2aWNlUGl4ZWxSYXRpbw==")] >= __ * 1.5;
         const _____ = document[atob("cXVlcnlTZWxlY3Rvcg==")]('p');
@@ -14,8 +14,9 @@ templ Here() {
     }
     _.addEventListener(atob("cmVzaXpl"), ___);
 
-  </script>
-		<h1>2. here</h1>
-		<p>the answer is tiny. you will have to use a magnifying glass.</p>
-	}
-}
+</script>
+
+<BasicLayout>
+    <h1>2. here</h1>
+    <p>the answer is tiny. you will have to use a magnifying glass.</p>
+</BasicLayout>

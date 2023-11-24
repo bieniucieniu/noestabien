@@ -1,25 +1,21 @@
 package main
 
 import (
-	"github.com/bieniucieniu/noestabien/web"
-	"github.com/bieniucieniu/noestabien/web/pages/templ"
+	"net/http"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/filesystem"
 )
 
 func main() {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{UnescapePath: true})
 
-	index := templ.Index()
-	app.Get("/", web.TemplHandler(index))
-
-	one := templ.One()
-	app.Get("/one", web.TemplHandler(one))
-
-	here := templ.Here()
-	app.Get("/here", web.TemplHandler(here))
-
-	notFound := templ.NotFound()
-	app.Get("/*", web.TemplHandler(notFound))
+	app.Use("/", filesystem.New(filesystem.Config{
+		Root:         http.Dir("./web/astro/dist"),
+		Browse:       true,
+		Index:        "index.html",
+		NotFoundFile: "404.html",
+	}))
 
 	app.Listen(":3000")
 }

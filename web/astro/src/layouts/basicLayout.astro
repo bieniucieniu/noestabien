@@ -1,17 +1,14 @@
-package templ
+<html lang="en">
 
-templ layout() {
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="utf-8"/>
-			<meta name="viewport" content="width=device-width"/>
-			<title>notbien</title>
-			<link rel="preconnect" href="https://fonts.googleapis.com"/>
-			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-			<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet"/>
-		</head>
-		<style>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>notbien</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+</head>
+<style is:global>
     * {
         font-family: Lato;
         margin: 0;
@@ -54,11 +51,12 @@ templ layout() {
         border-radius: 4px;
         margin: 4px 0;
     }
-    </style>
-		<body>
-			<main>
-				{ children... }
-			</main>
-		</body>
-	</html>
-}
+</style>
+
+<body>
+    <main>
+        <slot />
+    </main>
+</body>
+
+</html>

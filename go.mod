@@ -3,7 +3,6 @@ module github.com/bieniucieniu/noestabien
 go 1.21.3
 
 require (
-	github.com/a-h/templ v0.2.476
 	github.com/gofiber/fiber/v2 v2.51.0
 )
 
