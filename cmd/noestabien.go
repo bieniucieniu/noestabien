@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
@@ -8,10 +9,12 @@ import (
 )
 
 func main() {
+	staticPath := flag.String("static-path", "./web/static", "path to static htmlpages files")
+
 	app := fiber.New(fiber.Config{UnescapePath: true})
 
 	app.Use("/", filesystem.New(filesystem.Config{
-		Root:         http.Dir("./web/static"),
+		Root:         http.Dir(*staticPath),
 		Browse:       true,
 		Index:        "index.html",
 		NotFoundFile: "404.html",
