@@ -9,12 +9,12 @@ import (
 )
 
 func main() {
-	staticPath := flag.String("static-path", "./web/static", "path to static htmlpages files")
+	pagesPath := flag.String("pages-path", "./static/pages", "path to static html pages directory")
 
 	app := fiber.New(fiber.Config{UnescapePath: true})
 
 	app.Use("/", filesystem.New(filesystem.Config{
-		Root:         http.Dir(*staticPath),
+		Root:         http.Dir(*pagesPath),
 		Browse:       true,
 		Index:        "index.html",
 		NotFoundFile: "404.html",
