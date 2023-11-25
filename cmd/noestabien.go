@@ -1,24 +1,19 @@
 package main
 
 import (
-	"flag"
-	"net/http"
+	"log"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	"github.com/bieniucieniu/noestabien/web/handlers"
 )
 
 func main() {
-	pagesPath := flag.String("pages-path", "./static/pages", "path to static html pages directory")
+	app := handlers.Root()
 
-	app := fiber.New(fiber.Config{UnescapePath: true})
+	A := handlers.A()
 
-	app.Use("/", filesystem.New(filesystem.Config{
-		Root:         http.Dir(*pagesPath),
-		Browse:       true,
-		Index:        "index.html",
-		NotFoundFile: "404.html",
-	}))
+	app.Mount("/A/", A)
+
+	log.Println(A.MountPath())
 
 	app.Listen(":3000")
 }
