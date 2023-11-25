@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build --outDir ../../static/pages",
+    "build": "astro build --outDir ../pages",
     "preview": "astro preview"
   },
   "devDependencies": {
