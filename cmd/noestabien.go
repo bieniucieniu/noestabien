@@ -1,19 +1,22 @@
 package main
 
 import (
-	"log"
-
 	"github.com/bieniucieniu/noestabien/web/handlers"
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
-	app := handlers.App()
+	app := fiber.New()
 
-	A := handlers.A()
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendFile("./web/pages/index.html")
+	})
 
-	app.Mount("/A/", A)
+	app.Mount("/A/", handlers.A())
 
-	log.Println(A.MountPath())
+	app.Get("/*", func(c *fiber.Ctx) error {
+		return c.SendFile("./web/pages/404.html")
+	})
 
 	app.Listen(":3000")
 }

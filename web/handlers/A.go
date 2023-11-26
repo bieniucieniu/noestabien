@@ -2,47 +2,45 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/template/html/v2"
 )
 
 func A() *fiber.App {
-	engine := html.New("./web/pages/A", ".html")
-	app := fiber.New(fiber.Config{Views: engine})
+	app := fiber.New()
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Redirect("/one")
+		return c.SendFile("./web/pages/A/index.html")
 	})
 
 	app.Get("/one", func(c *fiber.Ctx) error {
-		return c.Render("one/index", nil)
+		return c.SendFile("./web/pages/A/one/index.html")
 	})
 
 	app.Get("/two", func(c *fiber.Ctx) error {
-		return c.Render("two/index", nil)
+		return c.SendFile("./web/pages/A/two/index.html")
 	})
 
 	app.Get("/here", func(c *fiber.Ctx) error {
-		return c.Render("here/index", nil)
+		return c.SendFile("./web/pages/A/here/index.html")
 	})
 
 	app.Get("/quark", func(c *fiber.Ctx) error {
-		return c.Render("quark/index", nil)
+		return c.SendFile("./web/pages/A/quark/index.html")
 	})
 
 	app.Get("/move", func(c *fiber.Ctx) error {
-		return c.Render("move/index", nil)
+		return c.SendFile("./web/pages/A/move/index.html")
 	})
 
 	app.Get("/checkmate", func(c *fiber.Ctx) error {
-		return c.Render("checkmate/index", nil)
+		return c.SendFile("./web/pages/A/checkmate/index.html")
 	})
 
 	app.Get("/b/checkmate", func(c *fiber.Ctx) error {
-		return c.Render("b/checkmate/index", nil)
+		return c.SendFile("./web/pages/A/b/checkmate/index.html")
 	})
 
 	app.Get("/qxf7", func(c *fiber.Ctx) error {
-		return c.Render("qxf7/index", nil)
+		return c.SendFile("./web/pages/A/qxf7/index.html")
 	})
 
 	return app
