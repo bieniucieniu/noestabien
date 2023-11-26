@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	app := handlers.Root()
+	app := handlers.App()
 
 	A := handlers.A()
 
