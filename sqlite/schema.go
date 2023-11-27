@@ -6,13 +6,14 @@ import (
 
 var schema = `
   CREATE TABLE IF NOT EXISTS user (
-    id   INTEGER     PRIMARY KEY,
-    key  varchar(8)  DEFAULT "",
+    id   INTEGER     PRIMARY KEY UNIQUE,
+    key  varchar(8)  DEFAULT UNIQUE,
     name varchar(20) DEFAULT ""
   );
 `
 
 type User struct {
-	Id  string `db:"id"`
-	Key string `db:"key"`
+	Id   int     `db:"id"`
+	Key  *string `db:"key"`
+	Name *string `db:"name"`
 }

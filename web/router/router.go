@@ -1,18 +1,14 @@
 package router
 
 import (
-	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/jmoiron/sqlx"
 )
 
-func Router() *fiber.App {
+func Router(db *sqlx.DB) *fiber.App {
 	app := fiber.New()
 
-	app.Mount("/profile", profile())
-
-	app.Use(jwtware.New(jwtware.Config{
-		SigningKey: jwtware.SigningKey{Key: []byte("secret")},
-	}))
+	app.Mount("/profile", profile(db))
 
 	app.Static("/", "./web/templates", fiber.Static{
 		Index: "index.html",

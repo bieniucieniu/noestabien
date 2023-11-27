@@ -8,12 +8,12 @@ import (
 )
 
 func main() {
-	app := router.Router()
-
-	_, err := sqlite.New()
+	db, err := sqlite.New()
 	if err != nil {
 		log.Panic(err)
 	}
+
+	app := router.Router(db)
 
 	app.Listen(":3000")
 }
