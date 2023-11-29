@@ -55,13 +55,15 @@
       <div>loged as {{.id}}</div>
       {{else}}
       <div id="parent-div">
-        <h1>genrate uniqe key for your profle</h1>
-        <button
-          hx-post="/clicked"
-          hx-trigger="click"
+        <h3>genrate uniqe key for your profle</h3>
+        <form
+          hx-post="{{.baseUrl}}/genUser"
           hx-target="#parent-div"
           hx-swap="outerHTML"
-        ></button>
+        >
+          <input type="text" name="name" value="" />
+          <button type="submit">generate</button>
+        </form>
       </div>
       {{end}}
     </main>
