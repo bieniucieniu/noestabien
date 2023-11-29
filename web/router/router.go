@@ -8,7 +8,7 @@ import (
 func Router(db *sqlx.DB) *fiber.App {
 	app := fiber.New()
 
-	app.Mount("/profile", profile(db))
+	app.Mount("/profile", profile(db, "/profile"))
 
 	app.Static("/", "./web/templates", fiber.Static{
 		Index: "index.html",
