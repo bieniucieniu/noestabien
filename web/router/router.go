@@ -1,11 +1,11 @@
 package router
 
 import (
+	"github.com/bieniucieniu/noestabien/sqlite"
 	"github.com/gofiber/fiber/v2"
-	"github.com/jmoiron/sqlx"
 )
 
-func Router(db *sqlx.DB) *fiber.App {
+func Router(db *sqlite.Database) *fiber.App {
 	app := fiber.New()
 
 	app.Mount("/profile", profile(db, "/profile"))
