@@ -49,7 +49,7 @@ func (db *Database) CreateUser(name string) (*User, error) {
 
 func (db *Database) AddUser(u *User) (*User, error) {
 	user := new(User)
-	db.sqlx.QueryRowx("INSERT INTO user (id, key, name) values ($1, $2, $3) RETURNING *;", u.Id, u.Key, u.Name).StructScan(user)
+	db.sqlx.QueryRowx("INSERT INTO user (id, key, name) values ($1, $2, $3) RETURNING *;", nil, u.Key, u.Name).StructScan(user)
 	return user, nil
 }
 
