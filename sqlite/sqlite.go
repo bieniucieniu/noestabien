@@ -3,7 +3,6 @@ package sqlite
 import (
 	"fmt"
 	"log"
-	"strconv"
 
 	"github.com/bieniucieniu/noestabien/auth"
 	"github.com/jmoiron/sqlx"
@@ -31,14 +30,16 @@ func New() (*Database, error) {
 func (db *Database) AddUser(u *User) (*User, error) {
 	user := new(User)
 	db.sqlx.QueryRowx("INSERT INTO user (id, key, name) values ($1, $2, $3) RETURNING *;", u.Id, u.Key, u.Name).StructScan(user)
-	log.Println(user)
 	return user, nil
 }
 
 func (db *Database) GetUser(id int64) (*User, error) {
-	user := new(User)
-	db.sqlx.Get(&user, "SELECT * FROM user WHERE id=$1", id)
-	return user, nil
+	user := User{}
+	err := db.sqlx.Get(&user, "SELECT * FROM user WHERE id=$1", id)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
 }
 
 func (db *Database) GetUserWithToken(tokenString *string) (*User, error) {
@@ -47,17 +48,12 @@ func (db *Database) GetUserWithToken(tokenString *string) (*User, error) {
 		return nil, err
 	}
 
-	idStr, ok := (*claims)["id"]
+	idStr, ok := (*claims)["id"].(float64)
 	if !ok {
 		return nil, fmt.Errorf("no id in token")
 	}
-	id, err := strconv.ParseInt(fmt.Sprint(idStr), 10, 64)
-	if err != nil {
-		log.Printf("error %s", err.Error())
-		return nil, err
-	}
 
-	user, err := db.GetUser(id)
+	user, err := db.GetUser(int64(idStr))
 	if err != nil {
 		log.Printf("error %s", err.Error())
 		return nil, err

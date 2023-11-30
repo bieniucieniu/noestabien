@@ -24,7 +24,7 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 		tokenString := c.Cookies("token", "")
 		user, err := db.GetUserWithToken(&tokenString)
 		if err != nil {
-			log.Print(err)
+			log.Println(err)
 			return c.Render("index", fiber.Map{
 				"baseUrl": strings.Join(baseUrl, ""),
 				"login":   false,
@@ -59,7 +59,6 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 		key := fmt.Sprintf("%12d", rand.Intn(1_000_000_000_000))
 
 		user, err := db.AddUser(&sqlite.User{
-			Id:   nil,
 			Name: body.Name,
 			Key:  key,
 		})
@@ -85,7 +84,6 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 		}
 
 		c.Append("Set-Cookie", fmt.Sprintf(`token="%s"`, t))
-
 		return c.Render("genUser", fiber.Map{
 			"name":  user.Name,
 			"key":   user.Key,

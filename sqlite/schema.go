@@ -13,7 +13,7 @@ var schema = `
 `
 
 type User struct {
-	Id   *int64 `db:"id"`
+	Id   int64  `db:"id"`
 	Key  string `db:"key"`
 	Name string `db:"name"`
 }
