@@ -78,16 +78,18 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 		if err != nil {
 			return c.Render("genUser", fiber.Map{
 				"token": "",
-				"name":  body.Name,
-				"key":   key,
+				"name":  user.Name,
+				"key":   user.Key,
+				"id":    user.Id,
 				"error": err.Error(),
 			})
 		}
 
 		return c.Render("genUser", fiber.Map{
+			"name":  user.Name,
+			"key":   user.Key,
+			"id":    user.Id,
 			"token": t,
-			"name":  body.Name,
-			"key":   key,
 		})
 	})
 

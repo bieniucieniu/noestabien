@@ -28,12 +28,10 @@ func New() (*Database, error) {
 	return &db, nil
 }
 
-// todo
 func (db *Database) AddUser(u *User) (*User, error) {
 	user := new(User)
-	out := db.sqlx.MustExec("INSERT INTO user (id, key, name) values ($1, $2, $3) RETURNING", u.Id, u.Key, u.Name)
-
-	fmt.Printf("out: %v\n", out)
+	db.sqlx.QueryRowx("INSERT INTO user (id, key, name) values ($1, $2, $3) RETURNING *;", u.Id, u.Key, u.Name).StructScan(user)
+	log.Println(user)
 	return user, nil
 }
 
