@@ -3,6 +3,7 @@ package sqlite
 import (
 	"fmt"
 	"log"
+	"math/rand"
 
 	"github.com/bieniucieniu/noestabien/auth"
 	"github.com/jmoiron/sqlx"
@@ -25,6 +26,25 @@ func New() (*Database, error) {
 	}
 
 	return &db, nil
+}
+
+func (db *Database) CreateUser(name string) (*User, error) {
+	if l := len(name); l > 20 {
+		return nil, fmt.Errorf("to long name")
+	} else if l == 0 {
+		return nil, fmt.Errorf("no name provided")
+	}
+
+	key := fmt.Sprintf("%12d", rand.Intn(1_000_000_000_000))
+
+	user, err := db.AddUser(&User{
+		Name: name,
+		Key:  key,
+	})
+	if err != nil {
+		return nil, fmt.Errorf(fmt.Sprintf("error adding user %s", err.Error()))
+	}
+	return user, nil
 }
 
 func (db *Database) AddUser(u *User) (*User, error) {
