@@ -47,19 +47,32 @@ func (db *Database) CreateUser(name string) (*User, error) {
 	return user, nil
 }
 
+// add user id always omited
 func (db *Database) AddUser(u *User) (*User, error) {
 	user := new(User)
 	db.sqlx.QueryRowx("INSERT INTO user (id, key, name) values ($1, $2, $3) RETURNING *;", nil, u.Key, u.Name).StructScan(user)
 	return user, nil
 }
 
-func (db *Database) GetUser(id int64) (*User, error) {
+func (db *Database) GetUser(u *User) (*User, error) {
 	user := User{}
-	err := db.sqlx.Get(&user, "SELECT * FROM user WHERE id=$1", id)
-	if err != nil {
-		return nil, err
+	if u.Id != 0 {
+		err := db.sqlx.Get(&user, "SELECT * FROM user WHERE id=$1", u.Id)
+		if err != nil {
+			return nil, err
+		}
+
+		return &user, nil
 	}
-	return &user, nil
+	if u.Key != "" {
+		err := db.sqlx.Get(&user, "SELECT * FROM user WHERE  key=$1", u.Key)
+		if err != nil {
+			return nil, err
+		}
+
+		return &user, nil
+	}
+	return nil, fmt.Errorf("no key or id in User struct")
 }
 
 func (db *Database) GetUserWithToken(tokenString *string) (*User, error) {
@@ -73,7 +86,9 @@ func (db *Database) GetUserWithToken(tokenString *string) (*User, error) {
 		return nil, fmt.Errorf("no id in token")
 	}
 
-	user, err := db.GetUser(int64(idStr))
+	user, err := db.GetUser(&User{
+		Id: int64(idStr),
+	})
 	if err != nil {
 		log.Printf("error %s", err.Error())
 		return nil, err

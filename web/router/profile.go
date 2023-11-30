@@ -41,9 +41,10 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 
 	type Body struct {
 		Name string `json:"name" xml:"name" form:"name"`
+		Key  string `json:"key" xml:"key" form:"key"`
 	}
 
-	app.Post("/genUser", func(c *fiber.Ctx) error {
+	app.Post("/reqUser", func(c *fiber.Ctx) error {
 		tokenString := c.Cookies("token", "")
 		_, err := auth.ValidateToken(&tokenString)
 		if err == nil {
@@ -56,9 +57,28 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 			return c.SendString(err.Error())
 		}
 
-		user, err := db.CreateUser(body.Name)
-		if err != nil {
-			c.SendString(fmt.Sprintf("error adding user %s", err.Error()))
+		user := sqlite.User{}
+
+		if body.Key != "" {
+			u, err := db.GetUser(&sqlite.User{
+				Key: body.Key,
+			})
+			if err != nil {
+				c.SendString(fmt.Sprintf("error adding user %s", err.Error()))
+			}
+			user = *u
+		}
+
+		if body.Name != "" {
+			u, err := db.CreateUser(body.Name)
+			if err != nil {
+				c.SendString(fmt.Sprintf("error adding user %s", err.Error()))
+			}
+			user = *u
+		}
+
+		if user.Id == 0 || user.Key == "" || user.Name == "" {
+			return fmt.Errorf("error adding / selecting user \n invalid user data")
 		}
 
 		token, err := auth.CreateToken(&jwt.MapClaims{
@@ -66,7 +86,7 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 			"name": user.Name,
 		})
 		if err != nil {
-			return c.Render("genUser", fiber.Map{
+			return c.Render("reqUser", fiber.Map{
 				"name":  user.Name,
 				"key":   user.Key,
 				"id":    user.Id,
@@ -75,7 +95,7 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 		}
 
 		c.Append("Set-Cookie", fmt.Sprintf(`token="%s"`, token))
-		return c.Render("genUser", fiber.Map{
+		return c.Render("reqUser", fiber.Map{
 			"name":  user.Name,
 			"key":   user.Key,
 			"id":    user.Id,

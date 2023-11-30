@@ -57,11 +57,20 @@
       <div id="parent-div">
         <h3>genrate uniqe key for your profle</h3>
         <form
-          hx-post="{{.baseUrl}}/genUser"
+          hx-post="{{.baseUrl}}/reqUser"
           hx-target="#parent-div"
           hx-swap="outerHTML"
         >
           <input type="text" name="name" value="" />
+          <button type="submit">generate</button>
+        </form>
+        <h3>or insert your key</h3>
+        <form
+          hx-post="{{.baseUrl}}/reqUser"
+          hx-target="#parent-div"
+          hx-swap="outerHTML"
+        >
+          <input type="text" name="key" value="" />
           <button type="submit">generate</button>
         </form>
       </div>
