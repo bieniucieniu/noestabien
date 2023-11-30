@@ -1,16 +1,6 @@
 <!doctype html>
 
 <div>
-  <script>
-    const token = "{{.t}}";
-
-    cookiesArray = document.cookie
-      .split(";")
-      .map((s) => s.trim())
-      .map((s) => (s.startsWith("token") ? `token="${token}"` : s));
-
-    document.cookie = cookiesArray.join(";");
-  </script>
   {{if .error}}
   <p>error: {{.error}}</p>
   {{end}}

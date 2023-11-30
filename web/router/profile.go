@@ -77,13 +77,14 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 		t, err := token.SignedString([]byte("jajcocjaj"))
 		if err != nil {
 			return c.Render("genUser", fiber.Map{
-				"token": "",
 				"name":  user.Name,
 				"key":   user.Key,
 				"id":    user.Id,
 				"error": err.Error(),
 			})
 		}
+
+		c.Append("Set-Cookie", fmt.Sprintf(`token="%s"`, t))
 
 		return c.Render("genUser", fiber.Map{
 			"name":  user.Name,
