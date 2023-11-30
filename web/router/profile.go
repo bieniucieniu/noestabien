@@ -3,9 +3,9 @@ package router
 import (
 	"fmt"
 	"log"
-	"math/rand"
 	"strings"
 
+	"github.com/bieniucieniu/noestabien/auth"
 	"github.com/bieniucieniu/noestabien/sqlite"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
@@ -38,42 +38,33 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 			"name":    user.Name,
 		})
 	})
+
 	type Body struct {
 		Name string `json:"name" xml:"name" form:"name"`
 	}
 
 	app.Post("/genUser", func(c *fiber.Ctx) error {
-		body := new(Body)
+		tokenString := c.Cookies("token", "")
+		_, err := auth.ValidateToken(&tokenString)
+		if err != nil {
+			return c.SendString("valid token already present")
+		}
 
+		body := new(Body)
 		if err := c.BodyParser(body); err != nil {
 			log.Println(err)
 			return c.SendString(err.Error())
 		}
 
-		if l := len(body.Name); l > 20 {
-			return c.SendString("to long name")
-		} else if l == 0 {
-			return c.SendString("no name provided")
-		}
-
-		key := fmt.Sprintf("%12d", rand.Intn(1_000_000_000_000))
-
-		user, err := db.AddUser(&sqlite.User{
-			Name: body.Name,
-			Key:  key,
-		})
+		user, err := db.CreateUser(body.Name)
 		if err != nil {
 			c.SendString(fmt.Sprintf("error adding user %s", err.Error()))
 		}
 
-		claims := jwt.MapClaims{
+		token, err := auth.CreateToken(&jwt.MapClaims{
 			"id":   user.Id,
 			"name": user.Name,
-		}
-
-		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-		t, err := token.SignedString([]byte("jajcocjaj"))
+		})
 		if err != nil {
 			return c.Render("genUser", fiber.Map{
 				"name":  user.Name,
@@ -83,12 +74,12 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 			})
 		}
 
-		c.Append("Set-Cookie", fmt.Sprintf(`token="%s"`, t))
+		c.Append("Set-Cookie", fmt.Sprintf(`token="%s"`, token))
 		return c.Render("genUser", fiber.Map{
 			"name":  user.Name,
 			"key":   user.Key,
 			"id":    user.Id,
-			"token": t,
+			"token": token,
 		})
 	})
 

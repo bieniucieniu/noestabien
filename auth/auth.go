@@ -9,11 +9,6 @@ import (
 
 var secret = []byte("jajcocjaj")
 
-type TokenClaims struct {
-	Id   int64
-	Name string
-}
-
 func ValidateToken(tokenString *string) (*jwt.MapClaims, error) {
 	if len(*tokenString) == 0 {
 		return nil, fmt.Errorf("empty token")
@@ -40,4 +35,10 @@ func ValidateToken(tokenString *string) (*jwt.MapClaims, error) {
 	}
 
 	return &claims, nil
+}
+
+func CreateToken(claims *jwt.MapClaims) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	return token.SignedString([]byte("jajcocjaj"))
 }
