@@ -46,7 +46,7 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 	app.Post("/genUser", func(c *fiber.Ctx) error {
 		tokenString := c.Cookies("token", "")
 		_, err := auth.ValidateToken(&tokenString)
-		if err != nil {
+		if err == nil {
 			return c.SendString("valid token already present")
 		}
 

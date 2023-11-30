@@ -14,8 +14,8 @@ type Database struct {
 	sqlx *sqlx.DB
 }
 
-func New() (*Database, error) {
-	sql, err := sqlx.Connect("sqlite3", "database.db")
+func New(dsn string) (*Database, error) {
+	sql, err := sqlx.Connect("sqlite3", dsn)
 	if err != nil {
 		return nil, err
 	}

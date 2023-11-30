@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	db, err := sqlite.New()
+	db, err := sqlite.New("database.db")
 	if err != nil {
 		log.Panic(err)
 	}
