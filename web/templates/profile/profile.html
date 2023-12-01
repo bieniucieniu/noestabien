@@ -1,0 +1,32 @@
+<!doctype html>
+{{if .login}}
+<div>loged as {{.name}}</div>
+{{else}}
+<div id="parent-div">
+  <h3>genrate uniqe key for your profle</h3>
+  <form
+    hx-post="{{.baseUrl}}/reqUser"
+    hx-target="#parent-div"
+    hx-swap="outerHTML"
+    hx-headers='{
+          "Access-Control-Allow-Headers":"*",
+          "Access-Control-Allow-Origin":"*",
+          "Access-Control-Allow-Methods":"*",
+          "Access-Control-Allow-Credentials":"true"
+          }'
+  >
+    <input type="text" name="new" value="" />
+    <button type="submit">generate</button>
+  </form>
+  <h3>or insert your key</h3>
+  <form
+    hx-post="{{.baseUrl}}/reqUser"
+    hx-target="#parent-div"
+    hx-swap="outerHTML"
+    hx-headers='{"Access-Control-Allow-Headers":"Accept"}'
+  >
+    <input type="text" name="key" value="" />
+    <button type="submit">get</button>
+  </form>
+</div>
+{{end}}

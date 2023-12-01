@@ -1,4 +1,4 @@
-package router
+package profile
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
+func Router(db *sqlite.Database, baseUrl ...string) *fiber.App {
 	engine := html.New("./web/templates/profile", ".html")
 
 	app := fiber.New(fiber.Config{
@@ -25,13 +25,13 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 		user, err := db.GetUserWithToken(&tokenString)
 		if err != nil {
 			log.Println(err)
-			return c.Render("index", fiber.Map{
+			return c.Render("profile", fiber.Map{
 				"baseUrl": strings.Join(baseUrl, ""),
 				"login":   false,
 				"id":      "sdasd",
 			})
 		}
-		return c.Render("index", fiber.Map{
+		return c.Render("profile", fiber.Map{
 			"baseUrl": strings.Join(baseUrl, ""),
 			"login":   true,
 			"id":      user.Id,
