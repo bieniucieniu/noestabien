@@ -1,10 +1,6 @@
 ### run:
 
 ```bash
-cd web/astro && bun run build
-```
-
-```bash
 go run cmd/noestabien.go
 ```
 
