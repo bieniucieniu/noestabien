@@ -8,13 +8,17 @@ import (
 func Router(db *sqlite.Database) *fiber.App {
 	app := fiber.New()
 
-	app.Mount("/profile", profile(db, "/profile"))
-
-	app.Static("/", "./web/templates", fiber.Static{
-		Index: "index.html",
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendFile("./web/templates/index.html")
 	})
 
+	app.Mount("/profile", profile(db, "/profile"))
+
 	app.Static("/assets", "./web/static")
+
+	app.Static("/A", "./web/templates/A", fiber.Static{
+		Index: "index.html",
+	})
 
 	app.Get("/*", func(c *fiber.Ctx) error {
 		return c.SendFile("./web/templates/404.html")
