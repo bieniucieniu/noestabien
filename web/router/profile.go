@@ -40,8 +40,8 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 	})
 
 	type Body struct {
-		Name string `json:"name" xml:"name" form:"name"`
-		Key  string `json:"key" xml:"key" form:"key"`
+		New string `json:"new" xml:"new" form:"new"`
+		Key string `json:"key" xml:"key" form:"key"`
 	}
 
 	app.Post("/reqUser", func(c *fiber.Ctx) error {
@@ -57,28 +57,26 @@ func profile(db *sqlite.Database, baseUrl ...string) *fiber.App {
 			return c.SendString(err.Error())
 		}
 
-		user := sqlite.User{}
+		user := &sqlite.User{}
 
 		if body.Key != "" {
-			u, err := db.GetUser(&sqlite.User{
+			user, err = db.GetUser(&sqlite.User{
 				Key: body.Key,
 			})
 			if err != nil {
-				c.SendString(fmt.Sprintf("error adding user %s", err.Error()))
+				log.Printf("error getting user by key %s", err.Error())
 			}
-			user = *u
 		}
 
-		if body.Name != "" {
-			u, err := db.CreateUser(body.Name)
+		if body.New != "" {
+			user, err = db.CreateUser(body.New)
 			if err != nil {
-				c.SendString(fmt.Sprintf("error adding user %s", err.Error()))
+				log.Printf("error adding user %s", err.Error())
 			}
-			user = *u
 		}
 
 		if user.Id == 0 || user.Key == "" || user.Name == "" {
-			return fmt.Errorf("error adding / selecting user \n invalid user data")
+			return fmt.Errorf("error adding / selecting user \n nil return or invalid user data \n %s", err.Error())
 		}
 
 		token, err := auth.CreateToken(&jwt.MapClaims{
