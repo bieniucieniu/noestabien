@@ -40,5 +40,17 @@ func ValidateToken(tokenString *string) (*jwt.MapClaims, error) {
 func CreateToken(claims *jwt.MapClaims) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	return token.SignedString([]byte("jajcocjaj"))
+	return token.SignedString(secret)
+}
+
+func OverRideClaims(tokenString *string, newClaims *jwt.MapClaims) (string, error) {
+	claims, err := ValidateToken(tokenString)
+	if err != nil {
+		return "", err
+	}
+	for key, newClaim := range *newClaims {
+		(*claims)[key] = newClaim
+	}
+
+	return CreateToken(claims)
 }
