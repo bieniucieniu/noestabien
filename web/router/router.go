@@ -16,6 +16,8 @@ func Router(db *sqlite.Database) *fiber.App {
 
 	app.Static("/assets", "./web/static")
 
+	app.Use("/A", levelPermisionLevel(db, 1))
+
 	app.Static("/A", "./web/templates/A", fiber.Static{
 		Index: "index.html",
 	})
