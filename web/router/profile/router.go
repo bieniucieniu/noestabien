@@ -45,14 +45,9 @@ func Router(db *sqlite.Database, baseUrl ...string) *fiber.App {
 	}
 
 	app.Post("/reqUser", func(c *fiber.Ctx) error {
-		tokenString := c.Cookies("token", "")
-		_, err := auth.ValidateToken(&tokenString)
-		if err == nil {
-			return c.SendString("valid token already present")
-		}
-
 		body := new(Body)
-		if err := c.BodyParser(body); err != nil {
+		err := c.BodyParser(body)
+		if err != nil {
 			log.Println(err)
 			return c.SendString(err.Error())
 		}
