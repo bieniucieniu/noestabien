@@ -4,18 +4,10 @@ import (
 	"github.com/bieniucieniu/noestabien/sqlite"
 	"github.com/bieniucieniu/noestabien/web/router/profile"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func Router(db *sqlite.Database) *fiber.App {
 	app := fiber.New()
-
-	app.Use(cors.New(cors.Config{
-		AllowCredentials: true,
-		AllowOrigins:     "http://localhost:3000",
-		AllowHeaders:     "Set-Cookie",
-		MaxAge:           1000,
-	}))
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendFile("./web/templates/index.html")
